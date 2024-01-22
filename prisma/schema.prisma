@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String   @id @default(uuid()) // Assuming you want to use the same column name as in your class
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  File        File[]
+}
+
+model File {
+  id         String   @id @default(uuid()) // Assuming you want to use the same column name as in your class
+  name       String
+  key        String
+  created_at DateTime @default(now())
+
+  // Define a relation to the Category model
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+}
