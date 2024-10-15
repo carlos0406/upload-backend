@@ -1,0 +1,24 @@
+# post category
+POST http://localhost:3000/category
+Content-Type: application/json
+
+{
+  "name": "Desenhos",
+  "description": "Meus desenhos"
+}
+###
+
+GET http://localhost:3000/file/9ca1fb82-e341-49ac-9097-caaa2f488220
+####
+
+#get  category
+GET http://localhost:3000/category?name=d
+Cookie:  access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ1OGNjMGM4LWIyMDktNGVkMC05ZDFjLTM1MTEzY2NjNzIxMiIsImVtYWlsIjoiY2FybG9zLmFuZHJhZGUuaGVucmlxdWUxQG91dGxvb2suY29tIiwibmFtZSI6IkNhcmxvcyBhZG1pbiIsImlhdCI6MTcyNDg5MDIyMywiZXhwIjoxNzI0OTA4MjIzfQ.F3HwxwDnTkGgHdK1y30vvj87CbFR4RvvpazXrU9TaS1SF9T3AoduwbCYrsAzqfZeTQgv1lOjRVL8DndYGEeC4a-hQn2yxe8zQ4EEiAwDdYGpzQ7s8SuEpaLMmyfaRQOqQ98StbpEuS30j-UqtDfqdbVk0N36UsbxUk9EGBDXRnkjW6lm0cgxtx-ewWBGR7jmcv48kPJgW5OuYefH5q6M_-nYpJAosEfU2Zmc4X5Z3lzidHzkIiRdG7LneQwZQuebKo4hFXfkylqzk7LEkVR-xtf4sBi6iR-v6ZAxntp4ARQG4T8VzX7MuYRxCDu5C26uiYDT1qWnoSpHCKMspWdQag
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+ "email":"example@teste.com",
+ "password":""
+}

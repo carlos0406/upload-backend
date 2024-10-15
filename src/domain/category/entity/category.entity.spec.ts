@@ -2,10 +2,6 @@ import { test, expect, describe } from 'vitest'
 import { Category } from './category.entity'
 
 describe('CategoryEntity', () => {
-  test('should be defined', () => {
-    expect(true).toBe(true)
-  })
-
   test('should be create a Category', () => {
     const category = new Category({
       description: 'any_description',

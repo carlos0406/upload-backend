@@ -9,7 +9,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
 }
 
 model Category {
@@ -34,9 +34,9 @@ model File {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  name     String?
+  id       String @id @default(uuid())
+  email    String @unique
+  name     String
   password String
   salt     String
 }

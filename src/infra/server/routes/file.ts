@@ -1,11 +1,9 @@
-import { GetObjectCommand } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { type FastifyInstance } from 'fastify'
-import { FileRepository } from '../../../domain/file/repository/file.repository'
-import { r2 } from '../../../services/s2'
-import { CreateFileUseCase } from '../../../domain/file/usecase/create-file.usecase'
-import { CategoryRepository } from '../../../domain/category/repository/category.repository'
+import { FileRepository } from '../../database/file/repository/file.repository'
+import { CreateFileUseCase } from '../../database/file/repository/usecase/create-file.usecase'
+import { CategoryRepository } from '../../database/category/repository/category.repository'
 import { z } from 'zod'
+import { settings } from '../../../settings'
 
 export const fileRoutes = (fastify: FastifyInstance, options: any, done: () => void) => {
   fastify.post('/upload', async function handler (request, reply) {
@@ -34,14 +32,7 @@ export const fileRoutes = (fastify: FastifyInstance, options: any, done: () => v
       const fileRepository = new FileRepository()
       const file = await fileRepository.findById(id)
       if (file) {
-        const url = await getSignedUrl(r2,
-          new GetObjectCommand({
-            Bucket: 'uploader',
-            Key: file.key
-          }),
-          {
-            expiresIn: 6000
-          })
+        const url = `${settings.BUCKET_DOWNLOAD_URL}${file.key}`
         return await reply.status(200).send({ url })
       }
     }

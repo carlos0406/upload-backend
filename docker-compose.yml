@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+        POSTGRES_PASSWORD: teste123
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app:
+    build: .
+    container_name: app
+    environment:
+      DATABASE_URL: "postgresql://postgres:teste123@postgres:5432/postgres"
+      DATABASE_DIRECT_URL: "postgresql://postgres:teste123@postgres:5432/postgres"
+      BUCKET_ACCESS_KEY_ID: "test"
+      BUCKET_SECRET_ACCESS_KEY: "test"
+      BUCKET_DOWNLOAD_URL: ${BUCKET_DOWNLOAD_URL}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      BUCKET_ENDPOINT: "http://localstack:4566"
+      NODE_ENV: "development"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - localstack
+
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=lambda,s3
+      - AWS_BUCKET_ACCESS_KEY_ID=test
+      - AWS_BUCKET_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+      - PERSISTENCE=1
+      - POST_INIT_SCRIPT=/etc/localstack/init/ready.d/init-all.sh
+    volumes:
+     - "./localstack_data:/var/lib/localstack"
+     - "/var/run/docker.sock:/var/run/docker.sock"
+     - ./.docker/localstack/cors-config.json:/etc/localstack/init/ready.d/utils/cors-config.json
+     - ./.docker/localstack/init-s3.sh:/etc/localstack/init/ready.d/utils/init-s3.sh
+     - ./.docker/localstack/init-cors.sh:/etc/localstack/init/ready.d/utils/init-cors.sh
+     - ./.docker/localstack/init-all.sh:/etc/localstack/init/ready.d/init-all.sh
+  react-app:
+    image: upload-frontend
+    ports:
+      - "5173:5173"
+volumes:
+  pgdata2:

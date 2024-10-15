@@ -10,7 +10,7 @@ const userCore = {
 }
 
 const createUserSchema = z.object({
-  ...userCore, // re-use the userCore object
+  ...userCore,
   password: z.string({
     required_error: 'Password is required'
   })

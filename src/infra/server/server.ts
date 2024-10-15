@@ -5,16 +5,15 @@ import { fileRoutes } from './routes/file'
 import fjwt from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import userRoutes from './routes/user'
+import { settings } from '../../settings'
 
-console.log('process.env.PUBLIC_KEY', process.env.PUBLIC_KEY)
-console.log('process.env.PRIVATE_KEY', process.env.PRIVATE_KEY)
 const fastify = Fastify({
   logger: true
 })
 fastify.register(fjwt, {
   secret: {
-    public: process.env.PUBLIC_KEY ?? 'teste',
-    private: process.env.PRIVATE_KEY ?? 'teste'
+    public: settings.JWT_PUBLIC_KEY,
+    private: settings.JWT_PRIVATE_KEY ?? 'teste'
   },
   sign: { algorithm: 'RS256', expiresIn: '5h' }
 })
@@ -39,7 +38,7 @@ fastify.addHook('preHandler', (req, res, next) => {
 })
 
 fastify.register(fCookie, {
-  secret: process.env.COOKIE_SECRET ?? 'some-secret-key',
+  secret: settings.COOKIE_SECRET,
   hook: 'preHandler'
 })
 
@@ -47,7 +46,8 @@ fastify.register(categoryRoutes)
 fastify.register(fileRoutes)
 fastify.register(userRoutes)
 fastify.register(cors, {
-  origin: '*'
+  origin: 'http://localhost:5173',
+  credentials: true
 })
 fastify.get('/', async function handler (request, reply) {
   return { hello: 'world' }

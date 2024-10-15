@@ -1,6 +1,6 @@
-import client from '../../../services/prisma'
-import { Category } from '../../category/entity/category.entity'
-import { File } from '../entity/file.entity'
+import client from '../../../../services/prisma'
+import { Category } from '../../../../domain/category/entity/category.entity'
+import { File } from '../../../../domain/file/entity/file.entity'
 import { type FileRepositoryInterface } from './file.repository.interface'
 
 export class FileRepository implements FileRepositoryInterface {
@@ -15,10 +15,6 @@ export class FileRepository implements FileRepositoryInterface {
       }
     })
     file.id = result.id
-  }
-
-  async delete (category: File): Promise<File> {
-    return category
   }
 
   async findById (id: string): Promise<File | null> {
@@ -43,17 +39,4 @@ export class FileRepository implements FileRepositoryInterface {
     }
     return null
   }
-
-  // async findAll (): Promise<File[]> {
-  //   const result = await prisma.category.findMany()
-  //   return result.map(category => (new File(
-  //     {
-  //       id: category.id,
-  //       name: category.name,
-  //       description: category.description,
-  //       created_at: category.created_at,
-  //       updated_at: category.updated_at
-  //     }
-  //   )))
-  // }
 }

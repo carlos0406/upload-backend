@@ -1,6 +1,6 @@
 import { LitCategoryUseCase } from './../../../domain/category/usecase/list-category'
 import { type FastifyInstance } from 'fastify'
-import { CategoryRepository } from '../../../domain/category/repository/category.repository'
+import { CategoryRepository } from '../../database/category/repository/category.repository'
 import { CreateCategoryUseCase } from '../../../domain/category/usecase/create-category.usecase'
 import { z } from 'zod'
 
@@ -22,7 +22,10 @@ export const categoryRoutes = (fastify: FastifyInstance, options: any, done: () 
       return await reply.status(400).send(e.message)
     }
   })
-  fastify.get('/category', async function handler (request, reply) {
+  fastify.get('/category', {
+    // preHandler: [fastify.authenticate]
+  }, async function handler (request, reply) {
+    console.log(request.user)
     const queryParams = z.object({
       name: z.string().default('')
     })

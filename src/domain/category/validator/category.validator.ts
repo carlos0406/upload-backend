@@ -2,15 +2,18 @@ import { type CategoryValidatorInterface } from './category.validator.interface'
 import { type Category } from './../entity/category.entity'
 import { type ZodError, z } from 'zod'
 
+const schema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(3).max(255),
+  description: z.string().min(3).max(255),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional()
+})
+
+export const CategoryType = typeof schema
+
 export class ZodCategoryValidator implements CategoryValidatorInterface {
   validate (category: Category) {
-    const schema = z.object({
-      id: z.string().uuid(),
-      name: z.string().min(3).max(255),
-      description: z.string().min(3).max(255),
-      created_at: z.date().optional(),
-      updated_at: z.date().optional()
-    })
     try {
       schema.parse(category)
     } catch (error) {

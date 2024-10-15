@@ -1,9 +1,9 @@
-import { type CategoryRepositoryInterface } from '../repository/category.repository.interface'
+import { type CategoryRepositoryInterface } from '../../../infra/database/category/repository/category.repository.interface'
 
 export class LitCategoryUseCase {
   constructor (private readonly categoryRepository: CategoryRepositoryInterface) {}
 
-  async execute (name: string) {
+  async execute (name: string = '') {
     const result = await this.categoryRepository.findByName(name)
     return result.map(category => ({
       id: category.id,

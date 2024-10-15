@@ -60,7 +60,7 @@ export class File extends AbstractClassEntity {
     super()
     this._id = props.id ?? uuid()
     this._name = props.name
-    this._key = this.name.concat('-').concat(this.id)
+    this._key = this.name + '-' + this.id
     this._category = props.category
     this.validate()
     if (this.notification.hasErrors()) {

@@ -1,5 +1,5 @@
-import client from '../../../services/prisma'
-import { Category } from './../entity/category.entity'
+import client from '../../../../services/prisma'
+import { Category } from '../../../../domain/category/entity/category.entity'
 import { type CategoryRepositoryInterface } from './category.repository.interface'
 export class CategoryRepository implements CategoryRepositoryInterface {
   async create (category: Category): Promise<void> {
@@ -14,8 +14,12 @@ export class CategoryRepository implements CategoryRepositoryInterface {
     })
   }
 
-  async delete (category: Category): Promise<Category> {
-    return category
+  async delete (categoryId: string) {
+    await client.category.delete({
+      where: {
+        id: categoryId
+      }
+    })
   }
 
   async findById (id: string): Promise<Category> {
@@ -36,21 +40,11 @@ export class CategoryRepository implements CategoryRepositoryInterface {
     )
   }
 
-  async findAll (): Promise<Category[]> {
-    const result = await client.category.findMany()
-    return result.map(category => (new Category(
-      {
-        id: category.id,
-        name: category.name,
-        description: category.description,
-        created_at: category.created_at,
-        updated_at: category.updated_at
-      }
-    )))
-  }
-
   async findByName (name: string): Promise<Category[]> {
     const result = await client.category.findMany({
+      orderBy: {
+        name: 'asc'
+      },
       where: {
         name: {
           contains: name,

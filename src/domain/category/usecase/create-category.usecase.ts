@@ -1,5 +1,5 @@
 import { Category } from './../entity/category.entity'
-import { type CategoryRepositoryInterface } from '../repository/category.repository.interface'
+import { type CategoryRepositoryInterface } from '../../../infra/database/category/repository/category.repository.interface'
 import { type InputCreateCategory } from './create-category.dto'
 
 export class CreateCategoryUseCase {

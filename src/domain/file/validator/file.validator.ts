@@ -8,6 +8,9 @@ export class ZodFileValidator implements FileValidatorInterface {
       id: z.string().uuid(),
       name: z.string().min(3).max(255),
       key: z.string().min(3).max(255),
+      category: z.object({
+        id: z.string().uuid()
+      }),
       created_at: z.date().optional()
     })
     try {
@@ -16,7 +19,7 @@ export class ZodFileValidator implements FileValidatorInterface {
       const validationErrors = error as ZodError
       validationErrors.errors.forEach((error) => {
         category.notification.addError({
-          context: '',
+          context: 'file',
           message: `${error.path.join('.')}:${error.message}`
         })
       })

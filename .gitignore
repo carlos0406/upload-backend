@@ -1,4 +1,7 @@
 node_modules
 # Keep environment variables out of version control
-.env
+.env*
 docker-compose-remote.yml
+localstack_data
+coverage
+.tool-versions
